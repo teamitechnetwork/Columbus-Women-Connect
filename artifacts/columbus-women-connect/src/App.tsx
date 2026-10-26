@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -54,7 +54,46 @@ function Metadata({ path }: { path: string }) {
 function Header() {
   const [path] = useLocation();
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setOpen(false);
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+      const focusable = menuRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+      window.requestAnimationFrame(() => toggleRef.current?.focus());
+    };
+  }, [open]);
   return <>
     <div className="topline">A Columbus community for women across cultures & generations</div>
     <header className="nav-wrap">
@@ -62,15 +101,37 @@ function Header() {
         <Link href="/" className="brand" aria-label="Columbus Women Connect home">
           <img src="/cwc-logo.png" width="350" height="157" alt="Columbus Women Connect logo" />
         </Link>
-        <button className="menu-toggle" type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="primary-links" onClick={() => setOpen(!open)}>
+        <button ref={toggleRef} className="menu-toggle" type="button" aria-label="Open navigation" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(true)}>
           {open ? <X size={23} /> : <Menu size={23} />}
         </button>
-        <div className={`nav-links ${open ? 'open' : ''}`} id="primary-links">
+        <div className="nav-links" id="desktop-links">
           {nav.map(([label, href]) => <Link key={href} href={href} aria-current={path === href ? 'page' : undefined} data-testid={`link-nav-${label.toLowerCase()}`}>{label}</Link>)}
         </div>
         <Link href="/join" className="nav-join" data-testid="link-join-header">Find your place <ArrowUpRight size={16} /></Link>
       </nav>
     </header>
+    <div ref={menuRef} className={`mobile-menu${open ? ' open' : ''}`} id="mobile-menu" role="dialog" aria-label="Mobile navigation" aria-modal={open || undefined} aria-hidden={!open}>
+      <div className="mobile-menu-header">
+        <Link href="/" className="brand mobile-brand" aria-label="Columbus Women Connect home" onClick={() => setOpen(false)}>
+          <img src="/cwc-logo.png" width="350" height="157" alt="Columbus Women Connect logo" />
+        </Link>
+        <button ref={closeRef} className="mobile-menu-close" type="button" aria-label="Close navigation" onClick={() => setOpen(false)}>
+          <X size={23} />
+        </button>
+      </div>
+      <div className="mobile-menu-content">
+        <div className="eyebrow">Explore Columbus Women Connect</div>
+        <nav className="mobile-nav-links" aria-label="Mobile navigation links">
+          {nav.map(([label, href]) => <Link key={href} href={href} aria-current={path === href ? 'page' : undefined} onClick={() => setOpen(false)}>
+            <span>{label}</span><ArrowUpRight size={19} aria-hidden="true" />
+          </Link>)}
+        </nav>
+        <div className="mobile-menu-actions">
+          <Link href="/join" className="button-primary" onClick={() => setOpen(false)}>Find your place <ArrowUpRight size={16} /></Link>
+          <Link href="/programs" className="button-outline" onClick={() => setOpen(false)}>Explore programs <ArrowRight size={16} /></Link>
+        </div>
+      </div>
+    </div>
   </>;
 }
 
