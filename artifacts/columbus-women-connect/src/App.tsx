@@ -19,10 +19,11 @@ const programs = [
   ['05', 'Business development services', 'Support for women building professional pathways and business ideas.'],
   ['06', 'Mental health & financial well-being', 'Space to support personal well-being and strengthen financial confidence.'],
 ];
-const nav = [['Home', '/'], ['About', '/about'], ['Programs', '/programs'], ['Join', '/join'], ['Contact', '/contact']];
+const nav = [['Home', '/'], ['About', '/about'], ['Chair', '/chair'], ['Programs', '/programs'], ['Join', '/join'], ['Contact', '/contact']];
 const pageMeta: Record<string, [string, string]> = {
   '/': ['Columbus Women Connect | Leadership Across Cultures', 'Columbus Women Connect empowers women through leadership, advocacy and community across cultures and generations in Columbus, Ohio.'],
   '/about': ['About Columbus Women Connect | Our Story', 'Learn about the mission, vision and story of Columbus Women Connect, founded in November 2024 by B4P CODEFOUND.'],
+  '/chair': ['A Message from the Chair | Columbus Women Connect', 'A welcome from the Chair of Columbus Women Connect to our supporters, partners, friends and visitors.'],
   '/programs': ['Programs | Columbus Women Connect', 'Explore CWC programs: community dialogues, professional development, mentorship, events, business development, and well-being.'],
   '/join': ['Join Columbus Women Connect | All Women Welcome', 'Join Columbus Women Connect. All women and their daughters are welcome in this community of leadership, advocacy and belonging.'],
   '/contact': ['Contact Columbus Women Connect | Columbus, Ohio', 'Contact Columbus Women Connect and connect with the chair or parent organization, B4P CODEFOUND.'],
@@ -269,6 +270,38 @@ function Join() {
   </Layout>;
 }
 
+function Chair() {
+  return <Layout>
+    <PageHero
+      eyebrow="A message from our Chair"
+      title="A welcome shaped"
+      emphasis="by every voice."
+      intro="To everyone who supports, partners with, visits and believes in Columbus Women Connect: you are welcome here."
+      image="/cwc-community.png"
+      alt="Women and community members gathered together at a Columbus Women Connect event"
+      imagePosition="center 48%"
+      action={<div className="hero-actions"><Link href="/join" className="button-primary">Find your place <ArrowRight size={17} /></Link><Link href="/contact" className="button-outline">Get in touch</Link></div>}
+    />
+    <section className="chair-letter-section">
+      <div className="chair-letter-layout">
+        <div className="chair-letter-intro">
+          <div className="eyebrow">From the Chair</div>
+          <h2>Connection makes room for every woman to grow.</h2>
+          <p>Columbus Women Connect brings women together across cultures and generations to lead, advocate and build community.</p>
+        </div>
+        <article className="chair-letter">
+          <p className="chair-letter-greeting">Dear supporters, partners, friends, and visitors,</p>
+          <p>Welcome to Columbus Women Connect. I am glad you are here.</p>
+          <p>CWC began with a simple belief: when women across cultures and generations come together, every voice can be heard and everyone has more room to grow. We bring that belief to life through conversation, mentorship, professional development, community events and support for well-being.</p>
+          <p>Whether you have supported this work from the beginning, partnered with us, shared our message or just found our site today, your presence matters. Each connection helps strengthen the community we are building together.</p>
+          <p>Thank you for your encouragement, generosity and trust. I invite you to explore our programs, reach out and take part in whatever way feels right to you. We look forward to meeting you.</p>
+          <p className="chair-letter-signoff">With gratitude,<br /><strong>Chair</strong><br />Columbus Women Connect</p>
+        </article>
+      </div>
+    </section>
+  </Layout>;
+}
+
 function Contact() {
   return <Layout>
     <PageHero eyebrow="Contact CWC" title="Let’s begin" emphasis="a conversation." intro="Questions about the community, programs or ways to join? We would be glad to hear from you." image="/cwc-community.png" alt="Columbus Women Connect members gathered together at a community event" imagePosition="center 48%" />
@@ -291,6 +324,7 @@ function Router() {
   return <RoutedErrorBoundary><Switch>
     <Route path="/" component={Home} />
     <Route path="/about" component={About} />
+    <Route path="/chair" component={Chair} />
     <Route path="/programs" component={Programs} />
     <Route path="/join" component={Join} />
     <Route path="/contact" component={Contact} />
