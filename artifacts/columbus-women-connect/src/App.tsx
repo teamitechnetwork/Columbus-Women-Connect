@@ -6,6 +6,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, Link, useLocation, Router as WouterRouter } from 'wouter';
 import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
+import { SiFacebook } from 'react-icons/si';
+import { FaLinkedin } from 'react-icons/fa';
 
 const queryClient = new QueryClient();
 const joinHref = 'mailto:management@b4pcodefound.org?subject=Join%20Columbus%20Women%20Connect';
@@ -96,7 +98,17 @@ function Header() {
     };
   }, [open]);
   return <>
-    <div className="topline">A Columbus community for women across cultures & generations</div>
+    <div className="topline">
+      <span>A Columbus community for women across cultures &amp; generations</span>
+      <div className="topline-socials" aria-label="Social media">
+        <a href="https://www.facebook.com/b4pcodefound.cause" target="_blank" rel="noopener noreferrer" aria-label="Visit B4P CODEFOUND on Facebook">
+          <SiFacebook aria-hidden="true" />
+        </a>
+        <a href="https://www.linkedin.com/company/b4p-codefound/" target="_blank" rel="noopener noreferrer" aria-label="Visit B4P CODEFOUND on LinkedIn">
+          <FaLinkedin aria-hidden="true" />
+        </a>
+      </div>
+    </div>
     <header className="nav-wrap">
       <nav className="nav-inner" aria-label="Main navigation">
         <Link href="/" className="brand" aria-label="Columbus Women Connect home">
@@ -148,9 +160,21 @@ function Footer() {
         <a href={joinHref}>Email Columbus Women Connect</a>
         <a href={chairEmail}>Contact the chair</a>
         <a href={parentSite} target="_blank" rel="noopener noreferrer">B4P CODEFOUND <ArrowUpRight size={14} /></a>
+        <div className="footer-socials" aria-label="Social media">
+          <a href="https://www.facebook.com/b4pcodefound.cause" target="_blank" rel="noopener noreferrer" aria-label="Visit B4P CODEFOUND on Facebook">
+            <SiFacebook aria-hidden="true" />
+          </a>
+          <a href="https://www.linkedin.com/company/b4p-codefound/" target="_blank" rel="noopener noreferrer" aria-label="Visit B4P CODEFOUND on LinkedIn">
+            <FaLinkedin aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </div>
-    <div className="footer-bottom"><span>Columbus Women Connect · Founded November 2024</span><span>A subsidiary of B4P CODEFOUND</span></div>
+    <div className="footer-bottom">
+      <span>Columbus Women Connect · Founded November 2024</span>
+      <span>A subsidiary of B4P CODEFOUND</span>
+      <a className="developer-credit" href="https://www.itechnetworkafrica.com/" target="_blank" rel="noopener noreferrer">Developed by iTech Network Africa</a>
+    </div>
   </footer>;
 }
 
@@ -181,14 +205,16 @@ function Home() {
     <section className="hero">
       <div className="hero-copy-block fade-up">
         <div className="eyebrow">Columbus, Ohio · Women, together</div>
-        <h1>Many stories.<br />One <em>shared</em><br />future.</h1>
+        <h1>Many stories.<br />One <em>shared</em><br /><span className="hero-future">future.</span></h1>
         <p className="hero-copy">Columbus Women Connect brings women together across cultures and generations—to lead, advocate and build a stronger community.</p>
         <div className="hero-actions"><Link href="/about" className="button-primary">Discover our story <ArrowRight size={17} /></Link><Link href="/programs" className="button-outline">Explore programs</Link></div>
+        <div className="hero-welcome"><span className="welcome-rule" /><span>All women and their daughters are welcome</span></div>
       </div>
       <div className="hero-collage fade-up" aria-label="CWC community photographs">
         <figure className="hero-photo-main"><img src="/cwc-community.png" width="705" height="458" alt="Women leaders and community members gathered at a Columbus Women Connect event" fetchPriority="high" /><figcaption>A community built by showing up.</figcaption></figure>
         <img className="hero-photo-small hero-photo-cultural" src="/cwc-cultural-community.png" width="350" height="250" alt="Women in colorful cultural dress gathered beneath flags representing their communities" />
         <span className="collage-note">Many cultures.<br />One community.</span>
+        <span className="hero-stamp" aria-hidden="true">COLUMBUS<br /><b>OHIO</b><i>·</i> EST. 2024</span>
       </div>
     </section>
     <section className="proof-strip" aria-label="Inaugural conference community">
