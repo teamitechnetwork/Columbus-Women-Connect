@@ -412,7 +412,6 @@ a { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation-duration: .01ms!important; animation-iteration-count: 1!important; transition-duration: .01ms!important; }
 }
-
 /* Home hero + shared social and attribution details */
 .topline { position: relative; padding-inline: 150px; }
 .topline-socials { position: absolute; right: max(24px,calc((100vw - 1250px)/2)); top: 0; height: 100%; display: flex; align-items: center; gap: 15px; }
