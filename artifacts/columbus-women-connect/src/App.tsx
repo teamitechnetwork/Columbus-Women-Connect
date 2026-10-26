@@ -57,9 +57,17 @@ function Metadata({ path }: { path: string }) {
 function Header() {
   const [path] = useLocation();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const isHome = path === '/';
+  useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > 80);
+    updateScrolled();
+    window.addEventListener('scroll', updateScrolled, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrolled);
+  }, []);
   useEffect(() => setOpen(false), [path]);
   useEffect(() => {
     if (!open) return;
@@ -98,7 +106,7 @@ function Header() {
     };
   }, [open]);
   return <>
-    <div className="topline">
+    <div className={`topline${isHome ? ' topline-home' : ''}`}>
       <span>A Columbus community for women across cultures &amp; generations</span>
       <div className="topline-socials" aria-label="Social media">
         <a href="https://www.facebook.com/b4pcodefound.cause" target="_blank" rel="noopener noreferrer" aria-label="Visit B4P CODEFOUND on Facebook">
@@ -109,7 +117,7 @@ function Header() {
         </a>
       </div>
     </div>
-    <header className="nav-wrap">
+    <header className={`nav-wrap${isHome ? ` nav-wrap-home${scrolled ? ' scrolled' : ''}` : ''}`}>
       <nav className="nav-inner" aria-label="Main navigation">
         <Link href="/" className="brand" aria-label="Columbus Women Connect home">
           <img src="/cwc-logo.png" width="350" height="157" alt="Columbus Women Connect logo" />
@@ -202,19 +210,19 @@ function PageHero({ eyebrow, title, emphasis, intro, image, alt, imagePosition =
 
 function Home() {
   return <Layout>
-    <section className="hero">
+    <section className="hero hero-parent">
+      <img className="hero-background" src="/cwc-community.png" width="705" height="458" alt="" aria-hidden="true" fetchPriority="high" />
       <div className="hero-copy-block fade-up">
         <div className="eyebrow">Columbus, Ohio · Women, together</div>
-        <h1>Many stories.<br />One <em>shared</em><br /><span className="hero-future">future.</span></h1>
+        <h1>Many stories.<br />One shared <em>future.</em></h1>
         <p className="hero-copy">Columbus Women Connect brings women together across cultures and generations—to lead, advocate and build a stronger community.</p>
         <div className="hero-actions"><Link href="/about" className="button-primary">Discover our story <ArrowRight size={17} /></Link><Link href="/programs" className="button-outline">Explore programs</Link></div>
-        <div className="hero-welcome"><span className="welcome-rule" /><span>All women and their daughters are welcome</span></div>
-      </div>
-      <div className="hero-collage fade-up" aria-label="CWC community photographs">
-        <figure className="hero-photo-main"><img src="/cwc-community.png" width="705" height="458" alt="Women leaders and community members gathered at a Columbus Women Connect event" fetchPriority="high" /><figcaption>A community built by showing up.</figcaption></figure>
-        <img className="hero-photo-small hero-photo-cultural" src="/cwc-cultural-community.png" width="350" height="250" alt="Women in colorful cultural dress gathered beneath flags representing their communities" />
-        <span className="collage-note">Many cultures.<br />One community.</span>
-        <span className="hero-stamp" aria-hidden="true">COLUMBUS<br /><b>OHIO</b><i>·</i> EST. 2024</span>
+        <div className="hero-focus" aria-label="CWC community values">
+          <span>All women and their daughters are welcome</span><span className="hero-focus-divider" aria-hidden="true">·</span>
+          <span>Leadership</span><span className="hero-focus-divider" aria-hidden="true">·</span>
+          <span>Community</span><span className="hero-focus-divider" aria-hidden="true">·</span>
+          <span>Advocacy</span>
+        </div>
       </div>
     </section>
     <section className="proof-strip" aria-label="Inaugural conference community">
