@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Columbus Women Connect"
+description = "The official Columbus Women Connect website: a welcoming community for women across cultures and generations, with information about its story, chair, programs, membership, and contact details."
+version = "1.0.0"
+id = "artifacts/columbus-women-connect"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24320
+
+[services.development]
+run = "pnpm --filter @workspace/columbus-women-connect run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/columbus-women-connect", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/columbus-women-connect/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24320"
+BASE_PATH = "/"
